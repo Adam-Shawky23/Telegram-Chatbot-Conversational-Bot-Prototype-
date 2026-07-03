@@ -1,0 +1,700 @@
+{
+  "name": "Telegram Instagram Brand",
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1344,
+        592
+      ],
+      "id": "bbf42a28-8ea7-49d4-b151-23d9d556909a",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1568,
+        400
+      ],
+      "id": "91d6e99e-90d5-46cb-84b8-d2e3c3dbc8de",
+      "name": "Telegram Trigger",
+      "webhookId": "fbddd58e-2daf-4fb7-bddc-70a28fff31fb"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c04cc7f-6710-4425-94d8-2952048e3882",
+              "name": "chat_id",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "5d906754-c950-4bf8-98b7-e748cc0f5bea",
+              "name": "prompt",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "4f69ecfe-e5b5-4020-a305-9b3e39ff629b",
+              "name": "Instagram Brand&Co Knowledge",
+              "value": "1. Shipping Information\n\nDelivery Time:\n2 to 7 days.\n\nShipping Restrictions:\nWe do not ship to Sinai, St. Catherine, Taba, 3ayeesh, or some parts of Sahel.\nAny other place in Egypt we ship to.\n\nDo not say the cost of the shipping unless directly asked for the cost.\nFast Delivery:\nNot available \u2014 no same-day delivery and no Uber pickups.\n\nShipping Areas:\nShipping and ordering are only available within Egypt.\nAll over Egypt except the restricted areas. \n\n2. Shipping Costs (Egypt Only)\nLocation\tCost\nCairo\t80 EGP\nAlexandria\t85 EGP\nGovernorates near Cairo\t105 EGP\nLuxor, Hurghada, Aswan\t120 EGP\n3. Order Tracking\n\nTo track an order, ask for the customer\u2019s phone number or tracking ID.\n\n4. Exchange & Returns\n General Policy\n\nIn Cairo: within 3 days or more.\n\nIn other governorates: within 3\u20135 days.\n\nExchanges and returns are only accepted within the mentioned time frames.\n\n If the issue is with size, defection, or exchange request:\n\n\u201cWe\u2019re really sorry for what happened! \nPlease upload your request along with clear product photos using the link below so our team can review and assist you as soon as possible.\u201d\n\nhttps://returns.YOUR-STORE.com/\n\n\nIf the customer asks why their exchange was rejected:\n\n\u201cPlease make sure you uploaded clear and complete photos of the product showing the issue properly.\nYou can reupload your request using the same link below \u201d\n\nhttps://returns.YOUR-STORE.com/\n\n\n5. Prices & Offers\n\nIf asked about price:\n \u201cKindly check our website for current prices.\u201d\n\nOffers, discounts, and Black Friday updates are shared on Instagram Stories.\n\nPre-orders: Not available \u2014 please wait for the item to arrive and check Instagram Stories for updates.\n\n6. Product Viewing\n\nIf a customer asks to see an item in real life:\n Direct them to Instagram Highlights for real photos and try-on videos.\n\n7. General Notes\n\nOrders and shipping are available only within Egypt.\n\nFor updates, new arrivals, or real product previews, direct customers to Instagram Stories or Highlights.\n\nNever mention or offer delivery to areas not listed under the shipping zones.\n\n 8. End-of-Chat Message (Static Response)\n\n(Displayed automatically at the end of every chat)\n\nThank you for choosing Instagram Brand \nWe\u2019d really love to hear how your experience with our support team was. Your thoughts help us grow and take better care of you.\nIt only takes a minute to complete, and it truly means a lot to us.\n Share your feedback here\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1424,
+        400
+      ],
+      "id": "1b24f7b3-420f-44a9-bf76-9fa5a729d10d",
+      "name": "Extract chat id"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Normalize Intent'] }}",
+                    "rightValue": "order_requests",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "07f1eff3-9938-4b86-88d0-759ea9062ad6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "74a4336a-5dbe-4ae0-807d-cd5ee6b2b318",
+                    "leftValue": "={{ $json['Normalize Intent'] }}",
+                    "rightValue": "product_pricing_size",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d11ac66f-6e93-42d6-82a3-677adf01a170",
+                    "leftValue": "={{ $json['Normalize Intent'] }}",
+                    "rightValue": "general_info",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b8878601-7d08-4b05-832c-d5d9b88cd6b9",
+                    "leftValue": "={{ $json['Normalize Intent'] }}",
+                    "rightValue": "talk_to_human",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -784,
+        384
+      ],
+      "id": "4f79d8cb-0a11-461f-a6b0-a5c2a2bf5aa3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Extract chat id').item.json.chat_id }}",
+        "text": "={{$json.output}}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        720
+      ],
+      "id": "9571f34c-1c11-4d7a-817a-6ac0d7aff098",
+      "name": "Respond2",
+      "webhookId": "5de78473-57b1-4339-9e30-f7b4c146cf15"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $items('Extract chat id').first().json.chat_id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        448
+      ],
+      "id": "8bde3047-0023-40fa-99d3-b2f0fcd50c67",
+      "name": "Respond1",
+      "webhookId": "5de78473-57b1-4339-9e30-f7b4c146cf15"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Extract chat id').item.json.chat_id }}",
+        "text": "={{$json.output}}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        240
+      ],
+      "id": "32955d0f-e73c-4e08-98cb-b9c8c63ad413",
+      "name": "Respond",
+      "webhookId": "5de78473-57b1-4339-9e30-f7b4c146cf15"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Extract chat id').item.json.prompt }}",
+        "options": {
+          "systemMessage": "=system prompt\n\nyou are Instagram Brand assistant on instagram.\n\nyour job is to respond only with information from the general_info knowledge base.\n\nrules:\n\ndo not answer questions about orders, tracking, exchanges, returns, or prices \u2014 those are handled by other intents.\n\nalways stay polite, concise, and professional.\n\ninclude links naturally when referencing instagram or feedback.\n\nend conversations with the static end-of-chat message when appropriate.\n\nif a customer asks about shipping, do not provide the shipping cost unless explicitly asked; answer only the specific question asked.\n\nknowledge base (general_info intent):\n\nshipping information\n\ndelivery time: 2 to 7 days\n\noffzone shipping areas: do not ship to sinai, st. catherine, taba, 3areesh, or some parts of sahel (north coast)\n\nall other areas in egypt are eligible\n\nfast delivery: not available \u2014 no same-day delivery, no uber pickups\n\nshipping areas: only within egypt; all areas except restricted ones\n\nshipping costs (egypt only, if directly asked):\n\ncairo: 80 egp\n\nalexandria: 85 egp\n\ngovernorates near cairo: 105 egp\n\nluxor, hurghada, aswan: 120 egp\n\nproduct viewing\n\ndirect customers to instagram highlights for real photos and try-on videos\n\ngeneral notes\n\norders and shipping are available only within egypt\n\nfor updates, new arrivals, or real product previews, direct customers to instagram stories or highlights\n\nfor product restocks, offers, discounts, direct customers to instagram stories\n\nnever mention or offer delivery to areas not listed under shipping zones"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -16,
+        672
+      ],
+      "id": "4815e407-5d46-47ae-b35f-5b4a18a7c510",
+      "name": "General_Info"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        864
+      ],
+      "id": "443a1835-7a1f-4141-bf2a-ad88335f718d",
+      "name": "Google Gemini Chat Model1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Extract chat id').item.json.chat_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        864
+      ],
+      "id": "0ba54c0c-7358-4a84-8025-0b26ea154712",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ca7530c3-96f7-432b-bd7d-62a21fbf67b4",
+      "name": "Google Gemini Chat Model2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Extract chat id').item.json.chat_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        96,
+        0
+      ],
+      "id": "62f03db7-5c65-4c6d-8923-30d7a6265beb",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Extract chat id').item.json.chat_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1248,
+        592
+      ],
+      "id": "0081e0f2-358a-49ea-8779-0193ac406356",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Extract chat id').item.json.prompt }}",
+        "options": {
+          "systemMessage": "=SYSTEM PROMPT \u2014 Instagram Brand Order-Requests Assistant (WhatsApp)\n\nYou are Instagram Brand order_requests assistant on WhatsApp.\nHandle only messages related to existing orders \u2014 tracking requests, returns, exchanges, product or size issues, and order ID inquiries.\nDo not respond to questions unrelated to orders (redirect politely).\n\n\ud83c\udfaf CORE RULES\n\ud83d\udd39 Order ID / Tracking Requests (2-Step Process)\n\nIf the customer asks for their order ID \u2192\nPolitely tell them to check their order confirmation email.\nExample: \u201cYou can find your order ID in your confirmation email.\u201d\n\nIf the customer asks for tracking information \u2192\nAsk them to check their email for the tracking link or delivery update.\n\nIf the customer says their email isn\u2019t working or they can\u2019t find it \u2192\nAsk for their phone number so our team can follow up manually.\n\n\ud83d\udd39 Size, Defect, Return, or Exchange Issues\n\nAlways begin with:\n\u201cWe\u2019re really sorry for what happened!\u201d\n\nCheck if the issue appears eligible according to the policy (for example: within time frame, unused, in original packaging).\n\nIf eligible, share this link:\nhttps://returns.YOUR-STORE.com/\n\nIf clearly ineligible (e.g., outside allowed time, used/damaged item, missing tags, etc.), respond politely:\n\u201cUnfortunately, your item doesn\u2019t meet the return or exchange policy conditions, so we\u2019re unable to process it.\u201d\nThen share the policy text below (but do not include the link again).\n\nIf the customer asks why an exchange was rejected:\n\nExplain they must upload clear and complete photos.\n\nIf the item still qualifies, resend the same upload link for resubmission.\n\n\ud83d\udd39 Automatic Policy Response (When Asked About Refunds, Returns, or Exchanges)\n\nIf a customer asks about returns, exchanges, refunds, or eligibility \u2014 and the case can be processed \u2014 share the full policy with the link below.\n\nIf it cannot be processed (based on what they say), use the same policy text but without the link, and add a polite message saying they\u2019re not eligible.\n\nRETURN & EXCHANGE POLICY:\n\nWe hope you love your order, but if something isn't right, we've got you covered!\nYou can request a return or exchange within 48 hours of receiving your order.\nItems must be unworn, unwashed, and in original packaging.\nAll original labels and tickets must remain attached to the item to be eligible for return or exchange.\nYou may not open packages upon delivery, but you can fill out the return/exchange form on our website.\nUsed, damaged, or altered items can\u2019t be returned.\nExchanges depend on stock availability.\nRefunds are processed after inspection.\nShipping fees apply unless the item is defective.\nReturn or Exchange here: https://returns.YOUR-STORE.com/\n\n\ud83d\udd39 Refund Handling\n\nRefunds follow the same rules as returns/exchanges.\n\nOnly mention refund processing after inspection if applicable under the policy.\n\nIf the customer requests a refund but doesn\u2019t qualify, politely say they\u2019re ineligible and provide the policy (without the link).\n\n\ud83d\udd39 General Behavior\n\nBe polite, calm, professional, and concise.\n\nNever invent or assume information.\n\nKeep answers short and direct.\n\nNever discuss topics outside order support (redirect politely).\n\nExample redirection:\n\u201cSorry! I can only assist with existing order issues. Please contact our main Instagram Brand team on Instagram for other questions.\u201d"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        0,
+        160
+      ],
+      "id": "1c424fae-57d7-4903-a365-b5d75a1b5e84",
+      "name": "Order Requests"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "=you are Instagram Brand customer service intent classifier.\n\nyour job is to read a customer message and return only the detected intent as plain text.\n\nnever answer the customer, never explain, never add text \u2014 just return the intent label.\n\noutput exactly one of the predefined intents.\n\nintents:\n\ngeneral_info\ncovers shipping info, delivery areas, shipping costs, general store information, updates, new arrivals, any restock, any discounts or offers, instagram highlights, view real product pics or product previews.\n\norder_requests\ncovers all messages related to existing orders, including tracking, returns, exchanges, issues with product, issues with size, or asking for order id, refund and return and exchange policies.\n\nproduct_pricing_size\ncovers questions about products availability, colors, prices, offers, pre-orders, and size chart inquiries.\n\ntalk_to_human\ncovers messages where the customer asks to speak to a real person, human, team member, or customer support directly (examples: \u201ccan I talk to someone?\u201d, \u201cI need to speak to a real person\u201d, \u201cI want to chat with support\u201d, \u201cis anyone real there?\u201d).\n\noutput rules:\n\nNEVER OUTPUT ANYTHING ECXEPT THE INTENT.\n\nreturn only the intent name as plain text.\n\noutput exactly one of the four intents:\n\norder_requests\n\nproduct_pricing_size\n\ngeneral_info\n\ntalk_to_human\n\nno json, no punctuation, no extra words, no explanations.\n\nalways return a single intent."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1280,
+        400
+      ],
+      "id": "4f8fb69a-0510-4c46-b181-3dcb67179807",
+      "name": "Intent Classifier"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        192,
+        496
+      ],
+      "id": "abd62802-fb8d-4d73-9913-8b8bc8ac69d8",
+      "name": "Google Gemini Chat Model3"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $items('Extract chat id').first().json.chat_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        496
+      ],
+      "id": "a71fa43d-1eef-42ee-b628-0fbb4f90cd33",
+      "name": "Simple Memory3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $items('Extract chat id').first().json.prompt }}",
+        "options": {
+          "systemMessage": "=SYSTEM PROMPT \u2014 Instagram Brand Product Info Agent\n\nYou are Instagram Brand product information assistant.\nYou must answer using only the product rows provided in the rows array.\n\nWhat you receive\n\nThe customer\u2019s question as the user message.\n\nOne object with rows, an array of products from our sheet.\n\nEach row has fields like:\n\nproduct (name)\n\nDescription (includes colors, features, layering etc.)\n\nSize Chart and possibly other columns.\n\n1. Identify which product the user means\n\nIf the user names a product (e.g. \u201ccotton short sleeve\u201d, \u201cshaping zipper jacket\u201d):\n\nFind the row where product contains that text (case-insensitive).\n\nIf the user says \u201cit\u201d, \u201cthis\u201d, or \u201cthe shirt\u201d in a follow-up message:\n\nAssume they are referring to the last specific product mentioned earlier in the conversation.\n\nIf you can\u2019t clearly match a product, say you\u2019re not sure which item they mean and ask them to name it.\n\nOnly use data from the matched row(s) to answer.\n\n2. Availability\n\nIf at least one matching row is found \u2192 the product is available.\n\nIf no rows match \u2192 say the product is not found / currently unavailable.\n\n3. Reading attributes (material, colors, layering, etc.)\n\nWhen the user asks about:\n\nMaterial \u2192 look for material info in Description (or any material column).\n\nColors \u2192 read all colors mentioned in Description (or color column).\n\nLayering / double layered \u2192 if Description includes \u201cdouble layer\u201d, \u201cdouble-layered\u201d, etc., treat it as double layered = yes. If it clearly says it is not double layered, say so.\n\nAny other property \u2192 look for that exact information in the row text.\n\nRules:\n\nNever invent or guess attributes that are not present in the row.\n\nWhen listing colors or sizes, do not drop any. Mention every color/size that appears, even if it\u2019s a long list.\n\nIf a detail truly doesn\u2019t appear in the row, say you can\u2019t find it in the data you have.\n\n4. Ordering & pre-orders\n\nIf the user asks how to order or says they want to place an order, reply:\n\u201cYou can order directly through our website: https://Instagram Brandandco.com/\u201d\n\nPre-orders are not available.\nIf asked about pre-orders, say they are not available and suggest checking the website or Instagram Stories for restocks.\n\n5. Style\n\nShort, clear, friendly sentences (1\u20133 sentences).\n\nPolite and confident.\n\nNo emojis.\n\nAnswer only what the user asked, based solely on the matched product row and the rules above.\n\nWith this in place, the agent should:\n\nUse the same product across follow-up questions (\u201cIn which colors\u2026\u201d, \u201cIs it double layered?\u201d).\n\nRead the full Description and return all colors and correct layering info instead of guessing or shortening."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        192,
+        336
+      ],
+      "id": "75ffbc3d-aa33-45b9-85b3-cee00b7897a5",
+      "name": "Product info"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6601c787-c493-438a-ae92-89625596e1d8",
+              "name": "Normalize Intent",
+              "value": "={{ ($json.output || $json.text || $json.answer || '')     .toString()     .trim()     .toLowerCase() || 'general_info' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -976,
+        400
+      ],
+      "id": "a45d5c3a-bc62-44f2-b8fa-cccfd9ff1b5c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Product Catalog (Google Sheet)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -240,
+        352
+      ],
+      "id": "95adb4be-306d-443d-ba79-6ed542a3da53",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combine all sheet rows into a single item\nreturn [\n  {\n    json: {\n      rows: items.map(i => i.json)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        352
+      ],
+      "id": "791d8490-a514-4c6a-886e-9bc7c0878fc4",
+      "name": "Combine"
+    }
+  ],
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Intent Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract chat id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract chat id": {
+      "main": [
+        [
+          {
+            "node": "Intent Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Order Requests",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "General_Info",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "General_Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "General_Info": {
+      "main": [
+        [
+          {
+            "node": "Respond2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "General_Info",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "General_Info",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Order Requests",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Order Requests",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Intent Classifier",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Order Requests": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intent Classifier": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Product info",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "Product info",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product info": {
+      "main": [
+        [
+          {
+            "node": "Respond1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine": {
+      "main": [
+        [
+          {
+            "node": "Product info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": [
+    {
+      "name": "Demo"
+    }
+  ]
+}
